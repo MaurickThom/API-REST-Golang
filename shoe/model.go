@@ -13,8 +13,9 @@ type Model struct {
 // mapa donde la clave será un string  el valor sera un Model
 type Storage map[string]*Model
 
-func (storage Storage) Create(model *Model) {
+func (storage Storage) Create(model *Model) *Model {
 	storage[model.Brand] = model
+	return model
 }
 
 func (storage Storage) GetAll() Storage {
