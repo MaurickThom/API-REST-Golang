@@ -31,13 +31,28 @@ func Login(context echo.Context) error {
 		}
 		return context.JSON(http.StatusBadRequest, resp)
 	}
+	token, err := generateJWT(*dbUser)
+	if err != nil {
+		return context.JSON(http.StatusInternalServerError, "no se pudo generar el token")
+	}
+	type logueo struct {
+		User  Model
+		Token string
+	}
+
+	l := logueo{
+		*dbUser,
+		token,
+	}
+
 	resp := response_model.Model{
 		MessageOK: response_model.MessageOK{
-			Code:    "0001",
-			Content: "successfully logged",
+			Code:    "O001",
+			Content: "Logueado ok",
 		},
-		Data: dbUser,
+		Data: l,
 	}
+
 	return context.JSON(http.StatusOK, resp)
 }
 

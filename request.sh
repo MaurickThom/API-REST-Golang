@@ -3,3 +3,8 @@ curl -d '{"brand":"walon", "price":1000,"color":"blue"}' -H "Content-Type: appli
 
 #Login
 curl -d '{"email":"thomtwd@gmail.com", "password":"thom"}' -H "Content-Type: application/json" -X POST http://localhost:8080/users -v | jq
+
+#jwt
+
+openssl genrsa -out app.rsa 1024
+openssl rsa -in app.rsa -pubout > app.rsa.pub
