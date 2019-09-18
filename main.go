@@ -9,7 +9,9 @@ import (
 
 func main() {
 	var e = echo.New()
-	e.GET("/", handlerHelloWorld)
+	// e.GET("/", handlerHelloWorld)
+	// e.GET("/greet", handlerGreet)
+	startRoutes(e)
 	var err = e.Start(":8080")
 	if err != nil { // nil significa nulo , entonces se le pregunta si error
 		// esta nulo o no, si no esta nulo significa que hay un error
@@ -23,4 +25,7 @@ en el contexto me trae el request y el response
 */
 func handlerHelloWorld(context echo.Context) error {
 	return context.String(http.StatusOK, "Hello world")
+}
+func handlerGreet(context echo.Context) error {
+	return context.String(http.StatusOK, "Hello !!")
 }
