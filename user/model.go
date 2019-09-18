@@ -1,5 +1,7 @@
 package user
 
+import jwt "github.com/dgrijalva/jwt-go"
+
 type Model struct {
 	FirstName string `json:"first_name"`
 	Email     string `json:"email"`
@@ -49,4 +51,9 @@ func init() {
 		Email:     "thomtwd@gmail.com",
 		Password:  "thom",
 	})
+}
+
+type Claim struct {
+	User Model
+	jwt.StandardClaims
 }

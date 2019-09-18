@@ -1,7 +1,9 @@
 package user
 
 import (
+	"errors"
 	"net/http"
+	"strings"
 
 	"github.com/MaurickThom/Taller-APIs-REST-Golang/response_model"
 	"github.com/labstack/echo"
@@ -29,5 +31,37 @@ func Login(context echo.Context) error {
 		}
 		return context.JSON(http.StatusBadRequest, resp)
 	}
-	return context.JSON(http.StatusOK, dbUser)
+	resp := response_model.Model{
+		MessageOK: response_model.MessageOK{
+			Code:    "0001",
+			Content: "successfully logged",
+		},
+		Data: dbUser,
+	}
+	return context.JSON(http.StatusOK, resp)
+}
+
+// getTokenFromAuthorizationHeader busca el token del header Authorization
+func getTokenFromAuthorizationHeader(r *http.Request) (string, error) {
+	ah := r.Header.Get("Authorization")
+	if ah == "" {
+		return "", errors.New("el encabezado no contiene la autorización")
+	}
+
+	// Should be a bearer token
+	if len(ah) > 6 && strings.ToUpper(ah[0:6]) == "BEARER" {
+		return ah[7:], nil
+	} else {
+		return "", errors.New("el header no contiene la palabra Bearer")
+	}
+}
+
+// getTokenFromURLParams busca el token de la URL
+func getTokenFromURLParams(r *http.Request) (string, error) {
+	ah := r.URL.Query().Get("authorization")
+	if ah == "" {
+		return "", errors.New("la URL no contiene la autorización")
+	}
+
+	return ah, nil
 }

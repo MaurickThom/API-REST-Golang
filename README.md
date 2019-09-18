@@ -3,5 +3,6 @@
 ![GOLANG](img/test.png)
 
 ```sh
-    >> go run main.go
+    >> go build
+    >> ./Taller-APIs-REST-Golang
 ```
