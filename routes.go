@@ -1,11 +1,11 @@
 package main
 
 import (
-	"./shoe"
+	//"./shoe"
 
 	"github.com/labstack/echo"
 )
 
 func startRoutes(e *echo.Echo) {
-	e.POST("/shoes", shoe.Create)
+	//e.POST("/shoes", shoe.Create)
 }
