@@ -1,6 +1,10 @@
 package user
 
-import jwt "github.com/dgrijalva/jwt-go"
+import (
+	"fmt"
+
+	jwt "github.com/dgrijalva/jwt-go"
+)
 
 type Model struct {
 	FirstName string `json:"first_name"`
@@ -9,6 +13,22 @@ type Model struct {
 }
 
 type Storage map[string]*Model
+
+var storage Storage
+
+func init() {
+	storage = make(map[string]*Model)
+	storage.Create(&Model{
+		FirstName: "Thom",
+		Email:     "thomtwd@gmail.com",
+		Password:  "thom",
+	})
+}
+
+type Claim struct {
+	User Model
+	jwt.StandardClaims
+}
 
 func (storage Storage) Create(model *Model) *Model {
 	storage[model.Email] = model
@@ -41,19 +61,14 @@ func (storage Storage) Login(email, password string) *Model {
 	return nil
 
 }
-
-var storage Storage
-
-func init() {
-	storage = make(map[string]*Model)
-	storage.Create(&Model{
-		FirstName: "Thom",
-		Email:     "thomtwd@gmail.com",
-		Password:  "thom",
-	})
-}
-
-type Claim struct {
-	User Model
-	jwt.StandardClaims
+func (storage Storage) GetAllPaginate(limit, page int) []*Model {
+	us := make([]*Model, 0, len(storage))
+	for _, v := range storage {
+		us = append(us, v)
+		fmt.Println(v)
+	}
+	fmt.Println(us)
+	offset := limit*page - limit
+	r := us[offset : limit*page]
+	return r
 }

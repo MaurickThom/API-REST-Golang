@@ -3,6 +3,7 @@ package user
 import (
 	"errors"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/MaurickThom/Taller-APIs-REST-Golang/response_model"
@@ -79,4 +80,45 @@ func getTokenFromURLParams(r *http.Request) (string, error) {
 	}
 
 	return ah, nil
+}
+func GetAll(context echo.Context) error {
+	queryString := context.QueryParams()
+	if len(queryString) == 0 {
+		us := storage.GetAll()
+		r := response_model.Model{
+			MessageOK: response_model.MessageOK{
+				Code:    "U205",
+				Content: "Consultado correctamente",
+			},
+			Data: us,
+		}
+		return context.JSON(http.StatusOK, r)
+	}
+
+	return GetAllPaginate(context)
+}
+func GetAllPaginate(context echo.Context) error {
+	l := context.QueryParam("limit")
+	p := context.QueryParam("page")
+
+	limit, err := strconv.Atoi(l)
+	if err != nil {
+		limit = 1
+	}
+	page, err := strconv.Atoi(p)
+	if err != nil {
+		page = 1
+	}
+
+	us := storage.GetAllPaginate(limit, page)
+
+	r := response_model.Model{
+		MessageOK: response_model.MessageOK{
+			Code:    "U205",
+			Content: "Consultado correctamente",
+		},
+		Data: us,
+	}
+
+	return context.JSON(http.StatusOK, r)
 }
