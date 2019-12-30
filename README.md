@@ -1,4 +1,4 @@
-# Taller-Apis-Rest-Golang
+# Apis-Rest-Golang
 
 ![GOLANG](img/test.png)
 
